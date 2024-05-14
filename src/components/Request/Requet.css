@@ -1,0 +1,45 @@
+.request{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.people_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.request__list{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+.request__list >div{
+    width: 400px;
+    border: 1px solid black;
+    padding: 20px;
+
+}
+
+
+
+.request__pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+}
+
+
+.request__pagination >li{
+    cursor: pointer;
+}
