@@ -24,20 +24,9 @@ export const todoSlice = createSlice({
         },
       }),
     },
-
-    delTodo: (state, action: PayloadAction<string>) => {
-      return state.filter((todo) => todo.id !== action.payload);
-    },
-
-    checkTodo: (state, action: PayloadAction<string>) => {
-      const index = state.findIndex((todo) => todo.id === action.payload);
-      if (index !== -1) {
-        state[index].completed = !state[index].completed;
-      }
-    }
   },
 });
 
-export const { addTodo, delTodo, checkTodo } = todoSlice.actions;
+export const { addTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
