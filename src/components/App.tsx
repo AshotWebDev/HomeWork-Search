@@ -1,4 +1,5 @@
 import AddTodo from "./AddTodo";
+import PlanetsList from "./PlanetsList";
 import TodoList from "./TodoList";
 import UserList from "./UserList";
 
@@ -11,6 +12,8 @@ function App() {
       <AddTodo />
 
       <UserList/>
+
+      <PlanetsList/>
 
     </div>
   );

@@ -1,22 +1,19 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import React, { useEffect, useState } from 'react';
+import useDebounce, { useAppDispatch, useAppSelector } from '../hooks';
 import { fetchUsers, setPage, setSearch } from '../features/users/userSlice';
+import SearchComponent from '../features/serachComponet/SearchComponent';
 
 const UserList: React.FC = () => {
     const dispatch = useAppDispatch();
     const { users, page, totalPages, loading, error, search } = useAppSelector((state) => state.users);
+    const [query, setQuery] = useState(search);
+   const  debouncedQuery = useDebounce(query, 700);
 
-    React.useEffect(() => {
-        dispatch(fetchUsers({ page, search }));
-    }, [dispatch, page, search]);
+    useEffect(() => {
+        dispatch(fetchUsers({ page, search: debouncedQuery }));
+    }, [dispatch, page, debouncedQuery]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    
 
     const handlePrevPage = () => {
         if (page > 1) {
@@ -31,28 +28,34 @@ const UserList: React.FC = () => {
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
         dispatch(setSearch(e.target.value));
     };
 
     return (
         <div>
             <h1>Users</h1>
-            <input type="text" value={search} onChange={handleSearchChange} />
+            <SearchComponent {...{ search: query, handleSearchChange }} />
 
-            <div>
-                {users.map((user: any) => (
-                    <div key={user.name}>
-                        <h2>{user.name}</h2>
-                        <p>Height: {user.height}</p>
-                        <p>Mass: {user.mass}</p>
-                    </div>
-                ))}
-            </div>
-
-            <div>
-                <button onClick={handlePrevPage} disabled={page === 1}>Prev</button>
-                <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
-            </div>
+            {
+                loading ?
+                    <div>Loading...</div>
+                    :
+                    error ?
+                        <div>Error: {error}</div>
+                        :
+                        <div>
+                            <ul>
+                                {users.map((user: any) => (
+                                    <li key={user.id}>
+                                        {user.name}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={handlePrevPage}>Prev</button>
+                            <button onClick={handleNextPage}>Next</button>
+                        </div>
+            }
         </div>
     );
 };
